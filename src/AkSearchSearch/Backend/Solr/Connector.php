@@ -30,7 +30,6 @@ namespace AkSearchSearch\Backend\Solr;
 
 use VuFindSearch\ParamBag;
 
-
 /**
  * AK: Extending SOLR connector.
  *
@@ -45,6 +44,7 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
 
     /**
      * Get unique key.
+     * 
      * AK: Return unique key based on the [AkSearch]->idFields config in
      *     searches.ini. If 'id' is contained in this config it is returned. If not,
      *     the first value found in the comma separated string is returned. Fallback
@@ -63,6 +63,7 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
 
     /**
      * Return document specified by id.
+     * 
      * AK: Using multiple ID fields for returning a document. The ID fields are
      *     specified in [AkSearch]->idFields config in searches.ini.
      *
@@ -110,7 +111,6 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
         $this->map->prepare(__FUNCTION__, $params);
         return $this->query($handler, $params);
     }
-
 
     /**
      * AK: Get a query string that searches in multiple ID fields (ORed together).
