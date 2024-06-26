@@ -76,13 +76,14 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
     {
         // AK: Use query string for multiple ID searches.
         $queryString = $this->getMultipleIdQueryString($id);
+
         $params = $params ?: new ParamBag();
         $params->set('q', $queryString);
 
         $handler = $this->map->getHandler(__FUNCTION__);
         $this->map->prepare(__FUNCTION__, $params);
 
-        return $this->query($handler, $params);
+        return $this->query($handler, $params, true);
     }
 
     /**
@@ -109,7 +110,7 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
 
         $handler = $this->map->getHandler(__FUNCTION__);
         $this->map->prepare(__FUNCTION__, $params);
-        return $this->query($handler, $params);
+        return $this->query($handler, $params, true);
     }
 
     /**
