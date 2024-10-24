@@ -29,6 +29,7 @@
 namespace AkSearchSearch\Backend\Solr;
 
 use VuFindSearch\ParamBag;
+use VuFindSearch\Backend\Exception\RequestErrorException;
 
 /**
  * AK: Extending SOLR connector.
@@ -96,6 +97,7 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
      *
      * @param string   $id     ID of given record (not currently used, but
      * retained for backward compatibility / extensibility).
+     * AK: Using $id for creating query string with multiple ID fields.
      * @param ParamBag $params Parameters
      *
      * @return string
@@ -110,7 +112,16 @@ class Connector extends \VuFindSearch\Backend\Solr\Connector
 
         $handler = $this->map->getHandler(__FUNCTION__);
         $this->map->prepare(__FUNCTION__, $params);
-        return $this->query($handler, $params, true);
+
+        try {
+            return $this->query($handler, $params, true);
+        } catch (RequestErrorException $e) {
+            // If Solr was unable to fetch the record, just act like we have no similar records:
+            if (str_contains($e->getMessage(), 'Could not fetch document with id')) {
+                return '{}';
+            }
+            throw $e;
+        }
     }
 
     /**
